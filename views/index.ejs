@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Express Survey Form</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="styles.css">
+	<script>
+		$(document).ready(function() {
+			var socket = io.connect();
+			$('#btn-to-click').click(function() {
+				socket.emit("button_pressed");
+				
+			});
+
+			$('#reset-btn').click(function() {
+				socket.emit("reset_activated");
+
+			});
+
+			socket.on("count_updated", function(data) {
+				$('#header').html("The button has been pushed " + data.count + " time(s)!");
+			});
+
+		})
+	</script>
+</head>
+<body>
+	<h2 id="header"></h2>
+	<p>Push the button to update the count!</p>
+	<button id="btn-to-click" class="btn btn-info">Push the epic button</button>
+	<button id="reset-btn" class="btn btn-danger">Reset Count</button>
+</body>
+</html>
